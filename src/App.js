@@ -56,7 +56,8 @@ function App() {
             if (item.url === nextPage.url) {
               item.checking = false
               item.verified = true
-              item.code = res.data.info.http_code
+              item.code = res.data.code
+              item.multyRedirect = !!res.data.info.redirect_count
             }
             return item
           })
@@ -148,7 +149,11 @@ function App() {
                                 <span className="new badge" data-badge-caption="">{item.code}</span>
                             }
                             </td>
-                          <td>{item.multiRedirect}</td>
+                          <td>
+                            <pre>
+                            {}
+                            </pre>
+                          </td>
                         </tr>
                     );
                   })}
