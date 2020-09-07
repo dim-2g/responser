@@ -4,6 +4,7 @@ import PreloaderCell from "./components/PreloaderCell";
 import Axios from "axios";
 import classNames from 'classnames' 
 import Parser from "html-react-parser";
+import FileDownload from "js-file-download";
 import './App.css';
 import 'materialize-css';
 
@@ -55,6 +56,7 @@ function App() {
               item.checking = false
               item.verified = true
               item.code = res.data.code
+              item.last_code = res.data.last_code
               item.multyRedirect = !!res.data.info.redirect_count
               item.chains = res.data.chains || []
             }
@@ -87,6 +89,32 @@ function App() {
     setPages(initialState)
     setStart(false)
     setFinish(false)
+  }
+
+  const download = async () => {
+      fetch(`/responser/xls.php?timestamp=${new Date().getTime()}`,
+        {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/vnd.ms-excel',
+          },
+          responseType: 'blob',
+          body: JSON.stringify(pages)
+        }
+      )
+      .then(response => {
+        if (response.ok) {
+          return response.blob();
+        }
+      })
+      .then(blob => {
+          var downloadUrl = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = downloadUrl;
+          a.download = "report.xls";
+          document.body.appendChild(a);
+          a.click();
+      });
   }
 
   useEffect(() => {
@@ -143,6 +171,7 @@ function App() {
                       Начать проверку
                     </button>
                     {finish && 
+                      <>
                       <button
                           className="waves-effect waves-light btn red lighten-2"
                           onClick={() => reinit()}
@@ -150,7 +179,16 @@ function App() {
                         <i className="material-icons left">autorenew</i>
                         Новая проверка
                       </button>
+                      <button
+                          className="waves-effect waves-light btn green darken-1"
+                          onClick={() => download()}
+                      >
+                        <i className="material-icons left">arrow_downward</i>
+                        Скачать в xls
+                      </button>
+                      </>
                     }
+
                 </div>
                 <table>
                   <thead>
