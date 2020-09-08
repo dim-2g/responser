@@ -9,9 +9,9 @@ export const Nav = () => {
                         <i className="material-icons medium">cake</i>
                         WebCandy</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li><a href="sass.html">Sass</a></li>
-                        <li><a href="badges.html">Components</a></li>
-                        <li><a href="collapsible.html">JavaScript</a></li>
+                        <li><a href="#">Sass</a></li>
+                        <li><a href="#">Components</a></li>
+                        <li><a href="#">JavaScript</a></li>
                     </ul>
                 </div>
             </div>
